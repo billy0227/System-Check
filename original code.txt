@@ -1,0 +1,119 @@
+import psutil
+import os.path
+import os
+
+# Measure cpu times-----------------------------------
+
+
+def montior_cpu_times():
+    print("\nCPU TIMES")
+    cpu_times = psutil.cpu_times()
+    user_time = round(cpu_times.user/3600)
+    system_time = round(cpu_times.system/3600)
+    idle_time = round(cpu_times.idle/3600)
+    print("Time spent on processes by the User: {} Hours".format(user_time))
+    print("Time spent on processes by the System: {} Hours".format(system_time))
+    print("Time spent on processes by the idle: {} Hours".format(idle_time))
+
+# Measure CPU util-------------------------------------
+
+
+def monitor_cpu_util():
+    print("\nCPU UTIL")
+    print(psutil.cpu_percent())
+
+# Count CPU cores--------------------------------------
+
+
+def monitor_cpu_cores():
+    print("\nCPU CORES")
+    print(psutil.cpu_count())
+
+# Measure CPU frequencies-------------------------------
+
+
+def monitor_cpu_freq():
+    print("\nCPU FREQUENCIES")
+    print("{} Mhz".format(psutil.cpu_freq().current))
+
+# Monitor RAM Usage-------------------------------------
+
+
+def monitor_RAM_Usage():
+    print("\nRAM USAGE")
+    virtual_memory = psutil.virtual_memory()
+    print("Total Memory {}GB".format(str(round(virtual_memory.total / (1024.0 ** 3)))))
+    print("Available Memory {}GB".format(
+        round(virtual_memory.available / (1024.0 ** 3))))
+    print("Used Memory {}GB".format(round(virtual_memory.used / (1024.0 ** 3))))
+    print("Percentage Memory {}%".format(virtual_memory.percent))
+    return str(virtual_memory)
+# Monitor disk partitions
+
+
+def monitor_disk():
+    print("\nDISK PARTITIONS")
+    print(psutil.disk_partitions())
+
+# Disk Utilization
+
+
+def monitor_disk_usage():
+    print("\nDISK USAGE C:")
+    disk_usage = psutil.disk_usage('C:')
+    print("Total Memory {}GB".format(round(disk_usage.total / (1024.0 ** 3))))
+    print("Free Memory {}GB".format(round(disk_usage.free / (1024.0 ** 3))))
+    print("Used Memory {}GB".format(round(disk_usage.used / (1024.0 ** 3))))
+    print("Percentage Memory {}%".format(disk_usage.percent))
+
+    print("\nDISK USAGE D:")
+    disk_usage = psutil.disk_usage('D:')
+    print("Total Memory {}GB".format(round(disk_usage.total / (1024.0 ** 3))))
+    print("Free Memory {}GB".format(round(disk_usage.free / (1024.0 ** 3))))
+    print("Used Memory {}GB".format(round(disk_usage.used / (1024.0 ** 3))))
+    print("Percentage Memory {}%".format(disk_usage.percent))
+
+
+# Monitor network requests
+
+
+def monitor_network():
+    print("\nNETWORK REQUESTS")
+    io_stats = psutil.net_io_counters()
+    print("Total Bytes Sent {} ".format(io_stats.bytes_sent))
+    print("Total Bytes Received {} ".format(io_stats.bytes_recv))
+
+# Run all checks
+
+
+def run_all_checks():
+    montior_cpu_times()
+    monitor_cpu_util()
+    monitor_cpu_cores()
+    monitor_cpu_freq()
+    monitor_RAM_Usage()
+    monitor_disk()
+    monitor_disk_usage()
+    monitor_network()
+    
+
+if not os.path.exists('C:\System Information Dump'):
+    os.makedirs('C:\System Information Dump')
+
+save_path = 'C:\System Information Dump'
+file_name = "System Info Dump.txt"
+
+completeName = os.path.join(save_path, file_name)
+print(completeName)
+
+file1 = open(completeName, "a")
+file1.write(str(run_all_checks()))
+file1.close()
+
+# def file1():
+# return run_all_checks()
+#info = file1()
+#file = open("System Info Dump.txt","a")
+# file.write(str(info))
+# file.close()
+# file1()
